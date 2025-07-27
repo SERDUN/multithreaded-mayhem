@@ -1,0 +1,21 @@
+### Upload small archive
+POST http://localhost:3000/zip
+Content-Type: multipart/form-data; boundary=MyBoundary
+
+--MyBoundary
+Content-Disposition: form-data; name="file"; filename="test_images_with_broken.zip"
+Content-Type: application/zip
+
+< ./assets/test_images_with_broken.zip
+--MyBoundary--
+
+### Upload large archive
+POST http://localhost:3000/zip
+Content-Type: multipart/form-data; boundary=MyBoundary
+
+--MyBoundary
+Content-Disposition: form-data; name="file"; filename="large_test_images_with_broken.zip"
+Content-Type: application/zip
+
+< ./assets/large_test_images_with_broken.zip
+--MyBoundary--
