@@ -8,10 +8,13 @@
     "dev": "nodemon --exec ts-node src/server.ts"
   },
   "dependencies": {
+    "adm-zip": "^0.5.16",
     "express": "^5.1.0",
-    "multer": "^2.0.2"
+    "multer": "^2.0.2",
+    "nanoid": "^5.1.5"
   },
   "devDependencies": {
+    "@types/adm-zip": "^0.5.7",
     "@types/express": "^5.0.3",
     "@types/multer": "^2.0.0",
     "nodemon": "^3.1.10",

@@ -23,5 +23,5 @@ Thumbs.db
 
 .eslintcache
 
-./uploads
-
+uploads/*
+tmp/*

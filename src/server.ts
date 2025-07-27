@@ -1,10 +1,14 @@
 import express from 'express';
 import http from "node:http";
 import multer from 'multer';
+import { UnzipUtil } from "./utils";
+import { nanoid } from "nanoid";
 
 const app = express();
 
 app.use(express.json());
+
+const zipService = new UnzipUtil();
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -18,8 +22,12 @@ const storage = multer.diskStorage({
 
 const upload = multer({storage});
 
-app.post('/zip', upload.single('file'), (req, res) => {
-    console.log('Uploaded file:', req.file);
+app.post('/zip', upload.single('file'), async (req, res) => {
+    console.log('Uploaded file:', req.file?.path);
+    const requestId = nanoid();
+
+    await zipService.extract(req.file?.path!, requestId);
+    await zipService.cleanup(requestId);
     res.json({message: 'File uploaded successfully', file: req.file});
 });
 
