@@ -3,24 +3,24 @@ import fs from 'node:fs/promises';
 import AdmZip from 'adm-zip';
 
 export class UnzipUtil {
-    constructor(private readonly baseTmpDir: string = '/tmp') {
+    constructor(private readonly baseTmpDir: string = '/temporary') {
     }
 
-    async extract(zipPath: string, requestId: string): Promise<void> {
-        const tmpDir = this.getDirPath(requestId);
+    public async extract(zipPath: string, requestId: string): Promise<void> {
+        const tmpDir = this.getExtractPath(requestId);
         console.log(`Extracting ${tmpDir}`);
 
         await this.createTmpDir(tmpDir);
         await this.extractZip(zipPath, tmpDir);
     }
 
-    async cleanup(requestId: string): Promise<void> {
-        const tmpDir = this.getDirPath(requestId);
+    public async cleanup(requestId: string): Promise<void> {
+        const tmpDir = this.getExtractPath(requestId);
         await this.removeDir(tmpDir);
     }
 
-    private getDirPath(requestId: string): string {
-        return path.join(process.cwd(), 'tmp', requestId);
+    public getExtractPath(requestId: string): string {
+        return path.join(process.cwd(), 'temporary', requestId);
     }
 
     private async createTmpDir(dirPath: string): Promise<void> {
