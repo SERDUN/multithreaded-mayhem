@@ -7,7 +7,7 @@ import fs from "node:fs/promises";
 import { Worker } from 'worker_threads';
 import { fileURLToPath } from "node:url";
 import { nanoid } from "nanoid";
-import { Mutex, UnzipUtil } from "./utils";
+import { Mutex, runWithConcurrencyLimit, UnzipUtil } from "./utils";
 
 const workerPath = path.join(__dirname, 'worker/thumbnail.js');
 
@@ -51,7 +51,7 @@ app.post('/zip', upload.single('file'), async (req, res) => {
 
     const TIMEOUT_MS = 5000;
 
-    const tasks = images.map(file => {
+    const tasks = images.map(file => runWithConcurrencyLimit(() => {
         const inputPath = path.join(extractPath, file);
         const outputPath = path.join(extractPath, `thumb_${file}`);
         console.log(`Processing ${inputPath} -> ${outputPath}`);
@@ -91,7 +91,7 @@ app.post('/zip', upload.single('file'), async (req, res) => {
                 resolve();
             });
         });
-    });
+    }));
 
     await Promise.all(tasks);
 
