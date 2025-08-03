@@ -1,7 +1,16 @@
-const MAX_CONCURRENCY = 4;
+import * as os from "node:os";
+
+let maxConcurrency: number = os.availableParallelism?.() ?? os.cpus().length;
 
 let activeWorkers = 0;
 const queue: (() => void)[] = [];
+
+export function setConcurrencyLimit(forceConcurrency: number) {
+    if (forceConcurrency > 0) {
+        maxConcurrency = forceConcurrency;
+        console.log(`MAX_CONCURRENCY manually set to: ${maxConcurrency}`);
+    }
+}
 
 export function runWithConcurrencyLimit<T>(fn: () => Promise<T>): Promise<T> {
     return new Promise((resolve, reject) => {
@@ -20,7 +29,7 @@ export function runWithConcurrencyLimit<T>(fn: () => Promise<T>): Promise<T> {
                 });
         };
 
-        if (activeWorkers < MAX_CONCURRENCY) {
+        if (activeWorkers < maxConcurrency) {
             execute();
         } else {
             queue.push(execute);
