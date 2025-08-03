@@ -1,7 +1,8 @@
 # Multithreaded mayhem
 
 > Accepts a `.zip` file with images, extracts them, generates thumbnails in worker threads, and returns a summary.
-> Thumbnail generation is offloaded to worker threads, and processed/skipped counters are mutex-protected for consistency.
+> Thumbnail generation is offloaded to worker threads, and processed/skipped counters are mutex-protected for
+> consistency.
 
 ---
 
@@ -59,10 +60,16 @@
 npm install
 ```
 
+## Build
+
+```bash
+npm run build
+```
+
 ## Run
 
 ```bash
-npm run dev
+npm run start
 ```
 
 Or directly:
